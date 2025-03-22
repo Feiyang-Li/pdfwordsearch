@@ -1,0 +1,24 @@
+pdfword Recognition
+
+
+Input:
+    pdf  
+    - Commands + words  (command *words)  
+        - Ranking command
+        - Ignore command
+        - Maybe we can combine command 
+    - line & page (ignore pages)
+    - contain image (false)
+    - Case sensentive
+    - Output number
+    // Importancy of the header might hold higher value
+    // Doc containing foreign words
+
+Output:
+    - Bytes location of the pdf (initial implementation should be first rule of display) (limited the number)
+    - Score in regard to the matching. 
+
+Display:
+    - Top (output number) Matches lines and page number. For example Top 10 matches lines with its page number. 
+    - Score in regard to the matching. 
+    - Total number of matches
