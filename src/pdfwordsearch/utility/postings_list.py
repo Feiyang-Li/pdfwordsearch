@@ -1,8 +1,9 @@
 from typing import Dict, List
 
+
 class PostingsList:
     def __init__(self):
-        self.postings_list : Dict[str, List] = dict()
+        self.postings_list: Dict[str, List] = dict()
 
     def add_word(self, word: str, location: int):
         if word in self.postings_list:
@@ -10,5 +11,5 @@ class PostingsList:
         else:
             self.postings_list[word] = [location]
 
-    def get_locations(self, word : str) -> List[int]:
+    def get_locations(self, word: str) -> List[int]:
         return self.postings_list[word]
