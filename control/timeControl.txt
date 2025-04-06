@@ -1,0 +1,21 @@
+2025/03/22
+
+FL: Finish up the Fuzz match & Theurause match 
+FL: scanning through the pdf 
+FL: Hopefully apply fuzz and the match on the element of the pdf. (hopefully)
+
+BL: Tolken parcing. 
+(and A B) 
+and  b 
+(or (and A b) C)
+
+(a b) c 
+
+def and(a, db):
+    ... 
+
+
+
+BL: 
+
+
