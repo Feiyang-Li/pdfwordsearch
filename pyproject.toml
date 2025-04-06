@@ -12,8 +12,8 @@ dependencies = [
 ]
 
 [tool.poetry]
-packages = [{include = "pdfwordsearch", from = "src"}]
-
+packages = [{include = "pdfwordsearch", from = "src"}
+]
 
 [tool.poetry.group.test.dependencies]
 pytest = "^8.3.5"
@@ -25,3 +25,6 @@ mypy = "^1.15.0"
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[[tool.poetry.include]]
+path = "pdfwordsearch/py.typed"
