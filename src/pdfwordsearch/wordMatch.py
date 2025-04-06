@@ -1,5 +1,4 @@
 from nltk.corpus import wordnet as wn
-import nltk
 import difflib
 
 def wordSynonyms(word: str = "default", CI = 0.3):
