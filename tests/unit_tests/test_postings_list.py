@@ -1,4 +1,4 @@
-from pdfwordsearch.utility.postings_list import PostingsList
+from pdfwordsearch.data_structures.postings_list import PostingsList
 
 
 def test_add_word_postings_list():
