@@ -5,7 +5,7 @@ class AbstractPostingsList(ABC):
     @abstractmethod
     def add_word(self, word: str, word_count: int, docid: int) -> None:
         """
-
+        Words must be added in non-decreasing order.
         Parameters
         ----------
         word : a word found in the document
