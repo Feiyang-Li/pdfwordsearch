@@ -1,66 +1,80 @@
+from abc import ABC, abstractmethod
+from collections import abc
 from typing import List
 
 from pdfwordsearch.query.tokenizer import Token
 
 
-class Term:
+class AbstractTerm(ABC):
+
+    def get_value(self):
+        raise NotImplementedError()
+
+    def add_to_list(self, term_list: List['AbstractTerm']):
+        term_list.append(self)
+
+    def __repr__(self):
+        return str(self.get_value())
+
+    def __eq__(self, other):
+        return self.get_value() == other.get_value()
+
+class AbstractAddableTerm(AbstractTerm):
+    @abstractmethod
+    def add_to_values(self, term):
+        raise NotImplementedError()
+
+class EmptyTerm(AbstractAddableTerm):
+    def add_to_values(self, term):
+        pass
+
+    def __init__(self):
+        super().__init__()
+
+    def get_value(self):
+        return None
+
+    def add_to_list(self, term_list: List['AbstractTerm']):
+        pass
+
+class Term(AbstractTerm):
+    """
+    Rank documents with this term higher
+    """
     def __init__(self, value):
+        super().__init__()
         self.value = value
 
     def get_value(self):
         return self.value
 
-    def add_to_list(self, term_list: List['Term']):
-        term_list.append(self)
 
-    def __repr__(self):
-        return str(self.value)
-
-    def __eq__(self, other):
-        return self.value == other.value
-
-class EmptyTerm(Term):
-    def __init__(self):
-        super().__init__(None)
-    def add_to_list(self, term_list: List['Term']):
-        pass
-
-class SimpleTerm(Term):
-    """
-    Rank documents with this term higher
-    """
-
-    pass
-
-
-class NegativeTerm(Term):
+class NegativeTerm(AbstractAddableTerm):
     """
     Rank documents with this term lower.
     """
 
     def __init__(self):
-        super().__init__([])
+        super().__init__()
+        self.value = []
 
-    def add_to_values(self, term: Term):
+    def get_value(self):
+        return self.value
+
+    def add_to_values(self, term: AbstractTerm):
         self.value.append(term)
 
 
-class ExactTerm(Term):
-    """
-    Rank documents with this exact phrase higher.
-    """
-
-    pass
-def tokens_to_terms(tokens: List[Token]) -> List[Term]:
-    result: List[Term] = []
-    current_term: Term = EmptyTerm()
+def tokens_to_terms(tokens: List[Token]) -> List[AbstractTerm]:
+    result: List[AbstractTerm] = []
+    current_term: AbstractAddableTerm = EmptyTerm()
     for token in tokens:
         match token.kind:
             case "MINUS":
                 current_term.add_to_list(result)
                 current_term = NegativeTerm()
             case "WORD":
-                term = SimpleTerm(token.value)
+                term = Term(token.value)
                 if type(current_term) is NegativeTerm:
                     current_term.add_to_values(term)
                 else:

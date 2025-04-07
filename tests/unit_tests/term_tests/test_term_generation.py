@@ -1,8 +1,8 @@
-from pdfwordsearch.query.term import tokens_to_terms, SimpleTerm
+from pdfwordsearch.query.term import tokens_to_terms, Term
 from pdfwordsearch.query.tokenizer import Token
 import pytest
 
-tokens_and_expected = [([Token("WORD", "hello"), Token("WORD", "world")], [SimpleTerm("hello"), SimpleTerm("world")])]
+tokens_and_expected = [([Token("WORD", "hello"), Token("WORD", "world")], [Term("hello"), Term("world")])]
 
 @pytest.mark.parametrize("tokens,expected", tokens_and_expected)
 def test_tokens_to_terms(tokens, expected):
