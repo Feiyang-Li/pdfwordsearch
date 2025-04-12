@@ -1,3 +1,8 @@
+## improve version of postingsList, instead of using list of tuples of (int, int)
+#   here we use dict[int, int] instead, it would help for the pdf coversion. we don't need to search for the
+#   number of word occurance anymore. 
+
+
 from typing import Dict, List, Tuple
 
 from abstract_postings_list import AbstractPostingsList
