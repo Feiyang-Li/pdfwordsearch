@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-from collections import abc
 from typing import List
 
 from pdfwordsearch.query.tokenizer import Token
