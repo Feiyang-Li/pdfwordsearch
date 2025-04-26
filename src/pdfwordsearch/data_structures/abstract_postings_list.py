@@ -1,4 +1,4 @@
-from abc import ABC, abstractclassmethod, abstractmethod
+from abc import ABC, abstractmethod
 from typing import Iterator, Tuple
 
 class AbstractPostingsList(ABC):
@@ -29,5 +29,15 @@ class AbstractPostingsList(ABC):
         Returns
         -------
 
+        """
+        raise NotImplementedError()
+
+    @abstractmethod
+    def get_words(self) -> Iterator[str]:
+        """
+
+        Returns
+        -------
+        All words encountered in the document
         """
         raise NotImplementedError()
