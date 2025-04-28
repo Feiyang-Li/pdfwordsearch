@@ -1,4 +1,4 @@
-from typing import Dict, List, Tuple
+from typing import Dict, List, Tuple, Iterator
 
 from pdfwordsearch.data_structures.abstract_postings_list import AbstractPostingsList
 
@@ -15,3 +15,7 @@ class PostingsList(AbstractPostingsList):
 
     def get_locations(self, word: str) -> List[Tuple[int,int]]:
         return self.postings_list[word]
+
+    def get_words(self) -> Iterator[str]:
+        return iter(self.postings_list.keys())
+
