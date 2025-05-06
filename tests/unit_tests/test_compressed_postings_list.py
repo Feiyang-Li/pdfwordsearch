@@ -1,4 +1,6 @@
-from pdfwordsearch.data_structures.compressed_postings_list import CompressedPostingsList
+from pdfwordsearch.data_structures.compressed_postings_list import (
+    CompressedPostingsList,
+)
 
 
 def test_add_word_compressed_postings_list():
@@ -9,6 +11,7 @@ def test_add_word_compressed_postings_list():
     actual = posting_list.get_locations("hello")
 
     assert list(actual) == [(12, 120), (11, 123)]
+
 
 def test_add_multiple_word_compressed_postings_list():
     posting_list = CompressedPostingsList()
@@ -21,6 +24,7 @@ def test_add_multiple_word_compressed_postings_list():
     assert list(posting_list.get_locations("world")) == [(11, 123)]
     assert list(posting_list.get_locations("animal")) == [(11, 124)]
     assert list(posting_list.get_locations("giraffe")) == [(11, 123)]
+
 
 def test_get_words_compressed_postings_list():
     posting_list = CompressedPostingsList()
