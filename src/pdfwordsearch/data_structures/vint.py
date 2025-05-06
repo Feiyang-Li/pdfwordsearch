@@ -1,5 +1,6 @@
 from typing import Iterator
 
+
 class VIntWriter:
     @staticmethod
     def write(integer_bytes: bytearray, value: int):
@@ -46,10 +47,3 @@ class VIntReader:
                 yield value
                 value = 0
                 shift = 0
-
-
-
-
-
-
-

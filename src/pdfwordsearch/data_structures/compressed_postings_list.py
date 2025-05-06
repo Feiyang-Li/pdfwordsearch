@@ -62,4 +62,3 @@ class CompressedPostingsList(AbstractPostingsList):
             docid = delta_docid + docid_prev
             docid_prev = docid
             yield word_count, docid
-
