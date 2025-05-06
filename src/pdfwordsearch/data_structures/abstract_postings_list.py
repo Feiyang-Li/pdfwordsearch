@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Iterator, Tuple
 
+
 class AbstractPostingsList(ABC):
     @abstractmethod
     def add_word(self, word: str, word_count: int, docid: int) -> None:
