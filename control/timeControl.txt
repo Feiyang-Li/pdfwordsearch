@@ -19,3 +19,24 @@ def and(a, db):
 BL: 
 
 
+2025/05/01
+
+BL: Accepts documents. 
+
+BL: Finish up the compress posting list
+
+FL: Match & scan upgrade, scan is done, previously the match is for go through the
+    entire passage, but now we are given words.     
+
+FL: convert sentense to posting list, read through paragraph and count number of words using posting list 
+happy something happy 
+
+FL update the composition
+.
+.
+.
+....
+
+
+
+

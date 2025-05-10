@@ -29,6 +29,7 @@ def wordSynonyms(word: str = "default", CI = 0.3):
 
     return similar_words
 
+    
 def simMatch(wordMatch, wordOrig, CI = 0.5, test=False):
     """ 
     determine if wordMatch is similar as wordOrig
