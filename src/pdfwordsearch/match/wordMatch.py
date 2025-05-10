@@ -12,7 +12,10 @@ def wordSynonyms(word: str = "default", CI = 0.3):
     Output:
     list(...(word : str, clossness: int) ... )
     """
-    base_synset = wn.synsets(word)[0]  # Choose the primary sense (adjust as needed)
+    bn = wn.synsets(word)
+    if not bn:
+        return []
+    base_synset = bn[0]  # Choose the primary sense (adjust as needed)
     similar_words = []
 
     for synset in wn.synsets(word):
@@ -44,8 +47,11 @@ def simMatch(wordMatch, wordOrig, CI = 0.5, test=False):
         print(difflib.SequenceMatcher(None, wordMatch, wordOrig).ratio())
     return difflib.SequenceMatcher(None, wordMatch, wordOrig).ratio() > CI
 
-def match(wordMatch, wordOrig, CI_syn, CI_sim):
+def match(wordMatch, wordOrig, CI_syn=0.3, CI_sim=0.5):
     # wordMatch: word we want to check if it is valid
     # wordOrig: the word we have on our hand. 
     wordSyn = wordSynonyms(wordOrig, CI_syn)
     return (wordMatch in wordSyn) or (simMatch(wordMatch, wordOrig, CI_sim)) or wordMatch == wordOrig
+
+
+## match would obtain some level of change

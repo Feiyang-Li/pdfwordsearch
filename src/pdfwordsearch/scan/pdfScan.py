@@ -1,7 +1,6 @@
-import pandas
 import pymupdf
 import json
-
+import re
 def pdfInfoGet(filePath, ignorePage = [], encode="utf8", save = None):
     """  
     get the information from pdf (table and image not implement yet) and 
@@ -21,7 +20,9 @@ def pdfInfoGet(filePath, ignorePage = [], encode="utf8", save = None):
             for block in txt["blocks"]:
                 if "lines" in block:
                     for line in block["lines"]:
-                        lst.append(" ".join([span["text"] for span in line["spans"]]))
+                        aStr = " ".join([span["text"] for span in line["spans"]])
+                        nStr = re.sub(r"[^\w\s]", " ", aStr) # no weird stuff
+                        lst.append(nStr)
         store[i] = lst
         i = i + 1
     if save:
