@@ -1,5 +1,5 @@
-from pdfwordsearch.match.wordMatch import wordSynonyms, simMatch
-from pdfwordsearch.data_structures.compressed_postings_list import CompressedPostingsList
+from pdfwordsearch.match.word_match import word_synonyms, sim_match
+from pdfwordsearch.data_structures.abstract_postings_list import AbstractPostingsList
 
 def redated_searchPostingList(word, pl, CI_syn = 0.3, CI_sim=0.9):
     """  
@@ -12,14 +12,14 @@ def redated_searchPostingList(word, pl, CI_syn = 0.3, CI_sim=0.9):
     Output:
     { ... wordMatch : Location_found ...}
     """
-    syn = wordSynonyms(word, CI_syn) 
+    syn = word_synonyms(word, CI_syn) 
     hold = {}
     for key, val in pl.postings_list.items(): # O(n) where n is the length of pdf page. 
-        if (key in syn) or (simMatch(key, word, CI_sim)) or key == word:
+        if (key in syn) or (sim_match(key, word, CI_sim)) or key == word:
             hold[key] = val
     return hold
 
-def searchPostingList(word, pl : CompressedPostingsList, CI_syn = 0.3, CI_sim=0.9):
+def search_posting_list(word, pl : AbstractPostingsList, CI_syn = 0.3, CI_sim=0.9):
     """ 
     Update to the redated_searchPostingList, instead of loop through the document, we loop through all words find in the
       posting_list
@@ -30,11 +30,11 @@ def searchPostingList(word, pl : CompressedPostingsList, CI_syn = 0.3, CI_sim=0.
     { ... wordMatch : Location_found ...}
     """
     #find the word:
-    syn = wordSynonyms(word, CI_syn) 
+    syn = word_synonyms(word, CI_syn) 
     hold = {}
     wds = pl.get_words()
     for wd in wds:
-        if (wd in syn) or (simMatch(wd, word, CI_sim)) or wd == word:
+        if (wd in syn) or (sim_match(wd, word, CI_sim)) or wd == word:
             hold[wd] = pl.get_locations(wd)
     return hold
 

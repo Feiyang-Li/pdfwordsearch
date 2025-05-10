@@ -2,7 +2,7 @@ from nltk.corpus import wordnet as wn
 import nltk
 import difflib
 
-def wordSynonyms(word: str = "default", CI = 0.3):
+def word_synonyms(word: str = "default", CI = 0.3):
     """ 
     wordSynonyms convert the word into list of words that is the 
     synonyms of the word and also additional chance of that word is added
@@ -33,7 +33,7 @@ def wordSynonyms(word: str = "default", CI = 0.3):
     return similar_words
 
     
-def simMatch(wordMatch, wordOrig, CI = 0.5, test=False):
+def sim_match(wordMatch, wordOrig, CI = 0.5, test=False):
     """ 
     determine if wordMatch is similar as wordOrig
     Input:
@@ -50,8 +50,8 @@ def simMatch(wordMatch, wordOrig, CI = 0.5, test=False):
 def match(wordMatch, wordOrig, CI_syn=0.3, CI_sim=0.5):
     # wordMatch: word we want to check if it is valid
     # wordOrig: the word we have on our hand. 
-    wordSyn = wordSynonyms(wordOrig, CI_syn)
-    return (wordMatch in wordSyn) or (simMatch(wordMatch, wordOrig, CI_sim)) or wordMatch == wordOrig
+    wordSyn = word_synonyms(wordOrig, CI_syn)
+    return (wordMatch in wordSyn) or (sim_match(wordMatch, wordOrig, CI_sim)) or wordMatch == wordOrig
 
 
 ## match would obtain some level of change

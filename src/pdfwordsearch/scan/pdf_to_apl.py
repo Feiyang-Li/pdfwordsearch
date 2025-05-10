@@ -3,7 +3,7 @@
 from pdfwordsearch.data_structures.compressed_postings_list import CompressedPostingsList
 from typing import Dict, List
 from collections import Counter
-def pdfToAPL(pdf: Dict[int, List[str]]) -> CompressedPostingsList:
+def pdf_to_APL(pdf: Dict[int, List[str]]) -> CompressedPostingsList:
     """    
     Giving abstract pdf and convert it to a compressed posting List
     --

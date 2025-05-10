@@ -1,7 +1,7 @@
 import pymupdf
 import json
 import re
-def pdfInfoGet(filePath, ignorePage = [], encode="utf8", save = None):
+def pdf_info_get(filePath, ignorePage = [], encode="utf8", save = None):
     """  
     get the information from pdf (table and image not implement yet) and 
         export as dictionary. 
