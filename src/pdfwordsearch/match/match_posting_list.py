@@ -19,7 +19,7 @@ def redated_searchPostingList(word, pl, CI_syn = 0.3, CI_sim=0.9):
             hold[key] = val
     return hold
 
-def search_posting_list(word, pl : AbstractPostingsList, CI_syn = 0.3, CI_sim=0.9):
+def search_posting_list(word : str, pl : AbstractPostingsList, CI_syn = 0.3, CI_sim=0.9):
     """ 
     Update to the redated_searchPostingList, instead of loop through the document, we loop through all words find in the
       posting_list
