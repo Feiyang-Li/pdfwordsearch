@@ -40,3 +40,16 @@ async def pdfToApl(file: UploadFile = File(...), page_ignore: Optional[List[int]
 async def search_apl(word: str, CI_syn : float = 0.3, CI_sim : float = 0.9):
     """Search for a word in the stored APL."""
     return search_posting_list(word, apl_store, CI_syn, CI_sim)
+
+@app.get("/apl/command/{command}")
+async def command_apl(command: str, CI_syn : float = 0.1, CI_sim : float = 0.7):
+    """Execute a command on the stored APL."""
+    """ 
+    Some sort of the command (unsure what is this for now)
+    like?:
+    lovely & (power | strange)  
+    as example? 
+        
+    """
+    # tbd 
+    return {"command": command }
