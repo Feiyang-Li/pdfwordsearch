@@ -21,6 +21,7 @@ packages = [{include = "pdfwordsearch", from = "src"}
 
 [tool.poetry.group.test.dependencies]
 pytest = "^8.3.5"
+httpx = "^0.28.1"
 
 
 [tool.poetry.group.dev.dependencies]

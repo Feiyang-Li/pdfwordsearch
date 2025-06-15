@@ -37,7 +37,7 @@ def sim_match(wordMatch, wordOrig, CI = 0.5, test=False):
     """ 
     determine if wordMatch is similar as wordOrig
     Input:
-    wordMatch: str => word to match
+    wordMatch: str => word to match_score_rank
     wordOrig: str => original word
     CI: float => cutoff interval for similarity
     Output:
@@ -54,4 +54,4 @@ def match(wordMatch, wordOrig, CI_syn=0.3, CI_sim=0.5):
     return (wordMatch in wordSyn) or (sim_match(wordMatch, wordOrig, CI_sim)) or wordMatch == wordOrig
 
 
-## match would obtain some level of change
+## match_score_rank would obtain some level of change

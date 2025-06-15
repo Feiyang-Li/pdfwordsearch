@@ -3,7 +3,7 @@ from typing import List
 import pytest
 
 from pdfwordsearch.data_structures.postings_list import PostingsList
-from pdfwordsearch.execute_query import execute_query
+from pdfwordsearch.match_score_rank.execute_query import execute_query
 
 query_and_matches = [("sheep", {3:1}), ("sheep cow", {3:4,4:1})]
 

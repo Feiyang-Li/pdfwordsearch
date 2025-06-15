@@ -2,4 +2,4 @@
 .venv/
 process/
 **/__pycache__/
-backEnd/uploaded_files/
+src/backend/uploaded_files/

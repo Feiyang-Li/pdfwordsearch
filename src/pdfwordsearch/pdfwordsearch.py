@@ -1,5 +1,3 @@
-import argparse
-
 from pdfwordsearch.coordinators.io_coordinator import IOCoordinator
 
 
