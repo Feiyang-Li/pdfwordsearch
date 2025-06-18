@@ -32,7 +32,7 @@ def pdf_to_dict(file_bytes: BinaryIO, ignore_page=None):
 
 
 
-def pdf_info_get(file_path, ignore_page = [], encode="utf8", save = None, is_binary = False):
+def pdf_info_get(file_path, ignore_page = None, encode="utf8", save = None, is_binary = False):
     """  
     get the information from pdf (table and image not implement yet) and 
         export as dictionary. 
@@ -42,6 +42,10 @@ def pdf_info_get(file_path, ignore_page = [], encode="utf8", save = None, is_bin
     save: str | None => save read into json. 
     """
     store = {}
+
+    if ignore_page is None:
+        ignore_page = []
+
     if is_binary:
         doc = pymupdf.Document(stream=file_path)
     else:
