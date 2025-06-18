@@ -1,6 +1,7 @@
+from pathlib import Path
+
 import matplotlib.pyplot as plt
 import time
-import sys
 from pympler import asizeof
 
 from pdfwordsearch.data_structures.compressed_postings_list import (
@@ -11,9 +12,12 @@ from pdfwordsearch.match_score_rank.execute_query import execute_query
 from pdfwordsearch.scan.pdf_scan import pdf_info_get
 from pdfwordsearch.scan.pdf_to_pl import pdf_to_pl
 
+current_dir = Path(__file__).parent
+path = current_dir.joinpath("../resources/List_of_chiropterans.pdf")
+
 
 def test_memory_usage():
-    doc_info = pdf_info_get("../resources/List_of_chiropterans.pdf")
+    doc_info = pdf_info_get(path)
     cpl = pdf_to_pl(doc_info, CompressedPostingsList)
     upl = pdf_to_pl(doc_info, PostingsList)
 
@@ -26,7 +30,7 @@ def test_memory_usage():
     plt.title("Uncompressed vs Compressed Postings List Memory Usage")
     plt.xlabel("Postings List")
     plt.ylabel("Memory Usage (MB)")
-    plt.savefig("Memory Usage.png")
+    plt.savefig(current_dir.joinpath("Memory Usage.png"))
 
 
 # Create graphs comparing compressed vs uncompressed postings list performance
@@ -43,7 +47,7 @@ def test_c_vs_u_large():
         "The suborders are further subdivided into clades and families, with Yangochiroptera containing fourteen families grouped into three superfamilies",
     ]
 
-    doc_info = pdf_info_get("../resources/List_of_chiropterans.pdf")
+    doc_info = pdf_info_get(path)
 
     cpl = pdf_to_pl(doc_info, CompressedPostingsList)
     upl = pdf_to_pl(doc_info, PostingsList)
@@ -72,4 +76,6 @@ def test_c_vs_u_large():
     plt.bar(
         ["Uncompressed Postings List", "Compressed Postings List"], [upl_avg, cpl_avg]
     )
-    plt.savefig("Uncompressed vs Compressed Postings List Performance.png")
+    plt.savefig(
+        current_dir.joinpath("Uncompressed vs Compressed Postings List Performance.png")
+    )
