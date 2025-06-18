@@ -2,7 +2,7 @@ import re
 
 
 class Token:
-    def __init__(self, kind: str, value: str):
+    def __init__(self, kind: str, value):
         self.kind = kind
         self.value = value
 
