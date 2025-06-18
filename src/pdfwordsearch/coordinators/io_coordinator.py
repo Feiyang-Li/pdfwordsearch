@@ -45,7 +45,7 @@ class IOCoordinator:
                 query = input("please specify a query to search")
                 scores = execute_query(query, postings_list)
 
-        print(f"Top {args.count} results")
+        print(f"Found {len(scores)} result(s). Printing top {args.count} results")
         for i in range(min(args.count, len(scores))):
             print(scores[i])
 
