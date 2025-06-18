@@ -8,6 +8,8 @@ Smart PDF Search is a Python tool that enables intelligent search within PDF doc
 We have managed to reduce the memory usage by 44% using variable length integer encoding.
 ![image](https://github.com/user-attachments/assets/c19f5751-d44b-4ff8-af54-be6821e268be)
 
+Benchmarking code can be found in [benchmarking code](tests/benchmark_tests)
+
 # Usage
 
 ## CLI
