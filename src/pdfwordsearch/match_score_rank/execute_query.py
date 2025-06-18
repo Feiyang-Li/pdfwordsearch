@@ -51,4 +51,4 @@ def execute_query(
                     result[docid] -= math.log(word_count + 1) * term_match_modifier
             case _:
                 raise RuntimeError(f"Unknown term type {type(term)} with value {term}")
-    return sorted(result.items(), key=lambda value: value[1])
+    return sorted(result.items(), key=lambda value: value[1], reverse=True)
