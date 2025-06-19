@@ -31,6 +31,7 @@ def test_memory_usage():
     plt.xlabel("Postings List")
     plt.ylabel("Memory Usage (MB)")
     plt.savefig(current_dir.joinpath("Memory Usage.png"))
+    plt.close()
 
 
 # Create graphs comparing compressed vs uncompressed postings list performance
@@ -79,3 +80,4 @@ def test_c_vs_u_large():
     plt.savefig(
         current_dir.joinpath("Uncompressed vs Compressed Postings List Performance.png")
     )
+    plt.close()
