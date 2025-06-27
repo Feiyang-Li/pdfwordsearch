@@ -11,13 +11,29 @@ from pdfwordsearch.match_score_rank.execute_query import execute_query
 from typing import List, Optional, Annotated, Dict, cast
 from pdfwordsearch.scan.pdf_scan import pdf_info_get
 from pdfwordsearch.scan.pdf_to_pl import pdf_to_pl
+from pydantic import BaseModel
 
 app = FastAPI()
 
 UPLOAD_DIR = "uploaded_files"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
+htmlPayload = {}
 # Storage (RAM for now but can be changed to disk storage later)
 apl_store : Dict[Cookie, CompressedPostingsList] = dict()
+
+class HtmlPayload(BaseModel):
+    url: str
+    html: str
+
+@app.post("/upload/pdfAsHtml/")
+async def process_html(payload: HtmlPayload):
+    print(f"Received HTML from {payload.url}")
+    # Optional: Save or parse HTML
+    global htmlPayload
+    htmlPayload = payload 
+    return {"status": "received", "length": len(payload.html)}
+
+
 
 
 @app.post("/pdf_to_apl/")
