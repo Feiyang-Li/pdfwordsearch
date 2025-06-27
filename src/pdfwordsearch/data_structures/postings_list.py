@@ -14,6 +14,8 @@ class PostingsList(AbstractPostingsList):
             self.postings_list[word] = [(word_count,docid)]
 
     def get_locations(self, word: str) -> List[Tuple[int,int]]:
+        if not word in self.postings_list:
+            return []
         return self.postings_list[word]
 
     def get_words(self) -> Iterator[str]:

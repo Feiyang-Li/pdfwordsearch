@@ -14,7 +14,8 @@ query_tests = [
         'Hi "Weirdos"',
         [Token("WORD", "Hi"), Token("QUOTATION_MARK", '"'), Token("WORD", "Weirdos"), Token("QUOTATION_MARK", '"')],
     ),
-    ("-Email", [Token("MINUS", '-'), Token("WORD", "Email")])
+    ("-Email", [Token("MINUS", '-'), Token("WORD", "Email")]),
+    ("123", [Token("NUMBER", 123)]),
 ]
 
 

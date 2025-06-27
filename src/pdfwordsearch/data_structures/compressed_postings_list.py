@@ -55,6 +55,10 @@ class CompressedPostingsList(AbstractPostingsList):
 
         """
         docid_prev = 0
+        if word not in self.postings_list:
+            yield from ()
+            return
+
         results = VIntReader.read(self.postings_list[word])
         while (word_count := next(results, None)) is not None:
             delta_docid = next(results)

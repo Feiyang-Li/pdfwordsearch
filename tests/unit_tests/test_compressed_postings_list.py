@@ -2,6 +2,9 @@ from pdfwordsearch.data_structures.compressed_postings_list import (
     CompressedPostingsList,
 )
 
+def test_get_locations_from_empty_pl_is_empty():
+    postings_list = CompressedPostingsList()
+    assert list(postings_list.get_locations("non-existent-word")) == []
 
 def test_add_word_compressed_postings_list():
     posting_list = CompressedPostingsList()
