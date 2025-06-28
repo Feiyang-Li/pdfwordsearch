@@ -1,33 +1,32 @@
 import tkinter as tk
 from typing import Callable, Optional
+from ttkbootstrap import Entry, Button, Frame
 
+from pdfViewer.pdf_components.results import Results
 from pdfwordsearch.data_structures.abstract_postings_list import AbstractPostingsList
 from pdfwordsearch.data_structures.compressed_postings_list import CompressedPostingsList
 
 
 MAX_RESULTS_DISPLAY = 5
 
-class Sidebar(tk.Frame):
-    def __init__(self, root, display_page_function: Callable[[int], int]):
-        tk.Frame.__init__(self, root)
+class Sidebar(Frame):
+    def __init__(self, master, display_page_function: Callable[[int], None]):
+        Frame.__init__(self, master)
 
         self.pl: Optional[AbstractPostingsList] = None
         self.display_page_function = display_page_function
 
-        # Create a label
-        self.label = tk.Label(self, text="Search:")
-        self.label.grid(column=0, row=0)
-
         # Create an entry widget for user input
-        self.entry = tk.Entry(self)
-        self.entry.grid(column=1, row=0)
+        self.entry = Entry(master)
+        self.entry.pack(side=tk.LEFT, fill=tk.X, anchor=tk.NW)
 
-        # Create a search button6
-        self.search_button = tk.Button(self, text="Search", command=self.perform_search)
-        self.search_button.grid(column=2, row=0)
+        # Create a search button
+        self.search_button = Button(master, text="Search")
+        self.search_button.pack(side=tk.LEFT, anchor=tk.NW)
 
-        self.results = tk.Listbox(self)
-        self.results.grid(column=0, row=2)
+        self.results = Results(master)
+        self.results.pack(side=tk.LEFT, anchor=tk.SW)
+
 
     def load_pdf_file(self):
         self.pl = CompressedPostingsList()
@@ -43,5 +42,5 @@ class Sidebar(tk.Frame):
 
 if __name__ == '__main__':
     root = tk.Tk()
-    sidebar = Sidebar(root, lambda _: 0)
+    sidebar = Sidebar(root, lambda _: None)
     root.mainloop()
