@@ -8,6 +8,7 @@ from tkinter import filedialog as fd
 import os
 # importing the PDFMiner class from the miner file
 from miner import PDFMiner
+from src.python_gui.side_pdf_smart_search import SideSearch
 
 
 # creating a class called PDFViewer
@@ -34,21 +35,20 @@ class PDFViewer:
         self.master.config(menu=self.menu)
         # creating a sub menu
         self.filemenu = Menu(self.menu)
-        # giving the sub menu a label
         self.menu.add_cascade(label="File", menu=self.filemenu)
-        # adding a two buttons to the sub menus
         self.filemenu.add_command(label="Open File", command=self.open_file)
         self.filemenu.add_command(label="Exit", command=self.master.destroy)
-        # creating the top frame
+
+
         self.top_frame = ttk.Frame(self.master, width=580, height=460)
         # placing the frame using inside main window using grid()
-        self.top_frame.grid(row=0, column=0)
+
         # the frame will not propagate
         self.top_frame.grid_propagate(False)
         # creating the bottom frame
         self.bottom_frame = ttk.Frame(self.master, width=580, height=50)
         # placing the frame using inside main window using grid()
-        self.bottom_frame.grid(row=1, column=0)
+
         # the frame will not propagate
         self.bottom_frame.grid_propagate(False)
         # creating a vertical scrollbar
@@ -58,13 +58,13 @@ class PDFViewer:
         # creating a horizontal scrollbar
         self.scrollx = Scrollbar(self.top_frame, orient=HORIZONTAL)
         # adding the scrollbar
-        self.scrollx.grid(row=1, column=0, sticky=(W, E))
+        self.scrollx.grid(row=1, column=1, sticky=(W, E))
         # creating the canvas for display the PDF pages
         self.output = Canvas(self.top_frame, bg='#ECE8F3', width=560, height=435)
         # inserting both vertical and horizontal scrollbars to the canvas
         self.output.configure(yscrollcommand=self.scrolly.set, xscrollcommand=self.scrollx.set)
         # adding the canvas
-        self.output.grid(row=0, column=0)
+
         # configuring the horizontal scrollbar to the canvas
         self.scrolly.configure(command=self.output.yview)
         # configuring the vertical scrollbar to the canvas
@@ -78,15 +78,29 @@ class PDFViewer:
         # creating an up button with an icon
         self.upbutton = ttk.Button(self.bottom_frame, image=self.uparrow, command=self.previous_page)
         # adding the button
-        self.upbutton.grid(row=0, column=1, padx=(270, 5), pady=8)
+
         # creating a down button with an icon
-        self.downbutton = ttk.Button(self.bottom_frame, image=self.downarrow, command=self.next_page)
+        self.down_button = ttk.Button(self.bottom_frame, image=self.downarrow, command=self.next_page)
         # adding the button
-        self.downbutton.grid(row=0, column=3, pady=8)
+
         # label for displaying page numbers
         self.page_label = ttk.Label(self.bottom_frame, text='page')
         # adding the label
-        self.page_label.grid(row=0, column=4, padx=5)
+
+
+        self.searcher = SideSearch(self.master)
+
+
+        # Set locations
+        self.top_frame.pack(side=TOP, fill=X)
+        self.output.pack(side=TOP, fill=X)
+
+        self.searcher.pack(side=LEFT, fill=X)
+
+        self.down_button.pack(side=LEFT, fill=X)
+        self.upbutton.pack(side=RIGHT, fill=X)
+        self.page_label.pack(side=RIGHT, fill=X)
+        self.bottom_frame.pack(side=BOTTOM, fill=X)
 
     # function for opening pdf files
     def open_file(self):
@@ -158,6 +172,16 @@ class PDFViewer:
                 self.current_page -= 1
                 # displaying the previous page
                 self.display_page()
+
+    def set_page(self, page_number: int):
+        if not self.file_is_open:
+            return
+
+        if not (0 <= page_number < self.num_pages):
+            return
+
+        self.current_page = page_number
+        self.display_page()
 
 
 # creating the root winding using Tk() class

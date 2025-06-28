@@ -4,7 +4,6 @@ from typing import List, Tuple
 
 from pdfwordsearch.data_structures.compressed_postings_list import CompressedPostingsList
 from pdfwordsearch.data_structures.postings_list import PostingsList
-from pdfwordsearch.match_score_rank.execute_query import execute_query
 from pdfwordsearch.scan.pdf_scan import pdf_info_get
 from pdfwordsearch.scan.pdf_to_pl import pdf_to_pl
 
@@ -57,7 +56,7 @@ class IOCoordinator:
         if args.query:
             start = time.time()
 
-            scores = execute_query(args.query, postings_list)
+            scores = postings_list.execute_query(args.query)
             end = time.time()
 
             IOCoordinator._print_results(scores, args.count, end - start)
@@ -70,7 +69,7 @@ class IOCoordinator:
                 except EOFError:
                     break
                 start = time.time()
-                scores = execute_query(query, postings_list)
+                scores = postings_list.execute_query(query)
                 end = time.time()
 
                 IOCoordinator._print_results(scores, args.count, end - start)
