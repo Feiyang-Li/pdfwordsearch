@@ -12,7 +12,8 @@ dependencies = [
     "pymupdf (>=1.25.5,<2.0.0)",
     "nltk (>=3.9.1,<4.0.0)",
     "pandas (>=2.2.3,<3.0.0)",
-    "fastapi[standard] (>=0.115.12,<0.116.0)"
+    "fastapi[standard] (>=0.115.12,<0.116.0)",
+    "ttkbootstrap (>=1.13.11,<2.0.0)"
 ]
 
 [tool.poetry]
