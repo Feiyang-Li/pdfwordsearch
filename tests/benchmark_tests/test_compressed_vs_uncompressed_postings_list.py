@@ -8,7 +8,6 @@ from pdfwordsearch.data_structures.compressed_postings_list import (
     CompressedPostingsList,
 )
 from pdfwordsearch.data_structures.postings_list import PostingsList
-from pdfwordsearch.match_score_rank.execute_query import execute_query
 from pdfwordsearch.scan.pdf_scan import pdf_info_get
 from pdfwordsearch.scan.pdf_to_pl import pdf_to_pl
 
@@ -58,12 +57,12 @@ def test_c_vs_u_large():
 
     for query in queries:
         start = time.time()
-        execute_query(query, cpl)
+        cpl.execute_query(query)
         end = time.time()
         cpl_times.append(end - start)
 
         start = time.time()
-        execute_query(query, upl)
+        upl.execute_query(query)
         end = time.time()
         upl_times.append(end - start)
 
