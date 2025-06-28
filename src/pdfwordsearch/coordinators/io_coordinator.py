@@ -69,7 +69,7 @@ class IOCoordinator:
                 except EOFError:
                     break
                 start = time.time()
-                scores = execute_query(query, postings_list)
+                scores = postings_list.execute_query(query)
                 end = time.time()
 
                 IOCoordinator._print_results(scores, args.count, end - start)
