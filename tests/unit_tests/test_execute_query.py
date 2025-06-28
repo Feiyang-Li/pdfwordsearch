@@ -3,7 +3,6 @@ from typing import List
 import pytest
 
 from pdfwordsearch.data_structures.postings_list import PostingsList
-from pdfwordsearch.match_score_rank.execute_query import execute_query
 
 query_and_matches = [("sheep", {3:1}), ("sheep cow", {3:4,4:1})]
 
@@ -16,6 +15,6 @@ def test_execute_query(query: str, expected_matches: List[int]) -> None:
     postings_list.add_word("cow", 1, 4)
     postings_list.add_word("cat", 1, 1)
 
-    actual_matches = list(execute_query(query, postings_list))
+    actual_matches = list(postings_list.execute_query(query))
 
     assert  sorted(actual_matches) == sorted(expected_matches)

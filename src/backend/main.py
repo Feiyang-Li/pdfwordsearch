@@ -1,13 +1,10 @@
 import uuid
 
-from anyio import TemporaryFile
-from fastapi import FastAPI, File, UploadFile, Form, Cookie, Response, HTTPException
+from fastapi import FastAPI, File, UploadFile, Form, Cookie, HTTPException
 from fastapi.responses import JSONResponse
-import shutil
 import os
 
 from pdfwordsearch.data_structures.compressed_postings_list import CompressedPostingsList
-from pdfwordsearch.match_score_rank.execute_query import execute_query
 from typing import List, Optional, Annotated, Dict, cast
 from pdfwordsearch.scan.pdf_scan import pdf_info_get
 from pdfwordsearch.scan.pdf_to_pl import pdf_to_pl
@@ -42,7 +39,6 @@ async def pdfToApl(file: UploadFile = File(...), page_ignore: Optional[List[int]
     Converts the file to an APL and returns a cookie
     Parameters
     ----------
-    response :d
     file :
     page_ignore :
     encode :
@@ -79,7 +75,6 @@ async def query_apl(query: str, session_id: Annotated[str | None, Cookie()] = No
     Parameters
     ----------
     query :
-    cookie :
     CI_syn :
     CI_sim :
 
@@ -90,5 +85,5 @@ async def query_apl(query: str, session_id: Annotated[str | None, Cookie()] = No
     if not session_id in apl_store:
         raise HTTPException(status_code=403, detail="Invalid cookie.")
 
-    results = execute_query(query=query, postings_list=apl_store[session_id])
+    results = apl_store[session_id].execute_query(query=query)
     return {results}
