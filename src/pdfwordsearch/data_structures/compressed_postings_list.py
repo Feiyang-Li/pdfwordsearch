@@ -1,11 +1,11 @@
-from typing import Iterator, Dict, Tuple
+from typing import Iterator, Dict, Tuple, Optional
 
 from pdfwordsearch.data_structures.abstract_postings_list import AbstractPostingsList
 from pdfwordsearch.data_structures.vint import VIntWriter, VIntReader
 
 
 class CompressedPostingsList(AbstractPostingsList):
-    def __init__(self, info: dict):
+    def __init__(self, info: Optional[dict] = None):
         self.postings_list: Dict[str, bytearray] = dict()
         self.docid_prev: Dict[str, int] = dict()
         super().__init__(info)
