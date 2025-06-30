@@ -3,10 +3,17 @@ from tkinter import filedialog, messagebox
 from PIL import Image, ImageTk
 import pymupdf
 
+from pdfViewer.pdf_components.searchbar import SearchBar
+from pdfwordsearch.scan.pdf_scan import pdf_info_get
+
+
 class PDFViewer:
     def __init__(self, root):
         self.root = root
         self.root.title("PDF Viewer with Search")
+
+        self.search_bar = SearchBar(root, self.display_page)
+        self.search_bar.pack(side=tk.LEFT, fill=tk.Y, anchor=tk.NW, padx=5, pady=5)
 
         # UI Elements
         self.canvas = tk.Canvas(root, width=root.winfo_screenwidth(), height=root.winfo_screenheight() - 300)
@@ -28,12 +35,15 @@ class PDFViewer:
         self.total_pages = 0
         self.images = []
 
+
+
     def open_pdf(self):
         file_path = filedialog.askopenfilename(filetypes=[("PDF Files", "*.pdf")])
         if not file_path:
             return
 
         self.doc = pymupdf.open(file_path)
+        self.search_bar.load_pdf_file(file_path)
         self.total_pages = len(self.doc)
         self.page_number = 0
         self.show_page()
@@ -60,6 +70,15 @@ class PDFViewer:
         if self.doc and self.page_number > 0:
             self.page_number -= 1
             self.show_page()
+
+    def display_page(self, page_number):
+        if self.doc is None:
+            return
+        if not 0 < page_number < self.total_pages:
+            raise ValueError("Page number out of range")
+
+        self.page_number = page_number
+        self.show_page()
 
     def search_text(self):
         if self.doc is None:
