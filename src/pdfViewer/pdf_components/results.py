@@ -1,4 +1,4 @@
-from tkinter.constants import TOP
+from tkinter.constants import TOP, NW
 from typing import List, Tuple, Callable, Optional
 from ttkbootstrap import Label
 
@@ -6,7 +6,7 @@ from ttkbootstrap import Frame
 
 from pdfViewer.pdf_components.result import Result
 
-MAX_SUMMARY_LENGTH = 50
+MAX_SUMMARY_LENGTH = 5
 
 
 class Results(Frame):
@@ -34,5 +34,5 @@ class Results(Frame):
                 f"{self.pdf_info[index][:MAX_SUMMARY_LENGTH]}...",
                 self.display_page_function,
             )
-            r.pack(side=TOP)
+            r.pack(side=TOP, anchor=NW, padx=5, pady=5)
         print("Showing results")
