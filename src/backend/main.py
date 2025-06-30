@@ -7,7 +7,6 @@ import os
 from pdfwordsearch.data_structures.compressed_postings_list import CompressedPostingsList
 from typing import List, Optional, Annotated, Dict, cast
 from pdfwordsearch.scan.pdf_scan import pdf_info_get
-from pdfwordsearch.scan.pdf_to_pl import pdf_to_pl
 from pydantic import BaseModel
 
 app = FastAPI()
@@ -57,14 +56,14 @@ async def pdfToApl(file: UploadFile = File(...), page_ignore: Optional[List[int]
     ## process 1: obtaining the abstract table:
     fl = pdf_info_get(file_bytes, ignore_page=page_ignore, encode=encode, save=save, is_binary=True)
     ## process 2: convert to compressed posting list
-    apl = pdf_to_pl(fl, CompressedPostingsList)
+    cpl = CompressedPostingsList(fl)
 
     # Associate APL with cookie
     unique_key = str(uuid.uuid4())
 
     response = JSONResponse(content={"Process": "pdf to apl process completed"})
     response.set_cookie(key=unique_key)
-    apl_store[unique_key] = cast(apl, CompressedPostingsList)
+    apl_store[unique_key] = cast(cpl, CompressedPostingsList)
 
     return {"response": response, "sid": unique_key} 
 
