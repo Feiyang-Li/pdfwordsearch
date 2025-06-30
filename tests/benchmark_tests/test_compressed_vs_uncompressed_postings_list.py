@@ -9,7 +9,6 @@ from pdfwordsearch.data_structures.compressed_postings_list import (
 )
 from pdfwordsearch.data_structures.postings_list import PostingsList
 from pdfwordsearch.scan.pdf_scan import pdf_info_get
-from pdfwordsearch.scan.pdf_to_pl import pdf_to_pl
 
 current_dir = Path(__file__).parent
 path = current_dir.joinpath("../resources/List_of_chiropterans.pdf")
@@ -17,8 +16,8 @@ path = current_dir.joinpath("../resources/List_of_chiropterans.pdf")
 
 def test_memory_usage():
     doc_info = pdf_info_get(path)
-    cpl = pdf_to_pl(doc_info, CompressedPostingsList)
-    upl = pdf_to_pl(doc_info, PostingsList)
+    cpl = CompressedPostingsList(doc_info)
+    upl = PostingsList(doc_info)
 
     cpl_size = asizeof.asizeof(cpl) / 1000
     upl_size = asizeof.asizeof(upl) / 1000
@@ -49,8 +48,8 @@ def test_c_vs_u_large():
 
     doc_info = pdf_info_get(path)
 
-    cpl = pdf_to_pl(doc_info, CompressedPostingsList)
-    upl = pdf_to_pl(doc_info, PostingsList)
+    cpl = CompressedPostingsList(doc_info)
+    upl = PostingsList(doc_info)
 
     cpl_times = []
     upl_times = []
