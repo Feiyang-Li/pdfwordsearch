@@ -23,7 +23,7 @@ def pdf_to_pl(pdf: Dict[int, List[str]], postings_list: type[AbstractPostingsLis
             words.extend(wd.lower().strip() for wd in v.split())
         word_count = Counter(words)
         for w, count in word_count.items():
-            pl.add_word(w, count, key)
+            pl._add_word(w, count, key)
     return pl
 
 
