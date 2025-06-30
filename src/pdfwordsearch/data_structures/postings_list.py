@@ -1,10 +1,10 @@
-from typing import Dict, List, Tuple, Iterator
+from typing import Dict, List, Tuple, Iterator, Optional
 
 from pdfwordsearch.data_structures.abstract_postings_list import AbstractPostingsList
 
 
 class PostingsList(AbstractPostingsList):
-    def __init__(self, pdf: Dict[int, List[str]]):
+    def __init__(self, pdf: Optional[Dict[int, List[str]]] = None):
         self.postings_list: Dict[str, List[Tuple[int,int]]] = dict()
         super().__init__(pdf)
 

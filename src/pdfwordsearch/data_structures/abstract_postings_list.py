@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from collections import defaultdict
-from typing import Iterator, Tuple, List, Dict
+from typing import Iterator, Tuple, List, Dict, Optional
 
 from pdfwordsearch.match_score_rank.word_match import word_synonyms
 from pdfwordsearch.query.term import tokens_to_terms, Term, NegativeTerm
@@ -9,7 +9,10 @@ import math
 from collections import Counter
 
 class AbstractPostingsList(ABC):
-    def __init__(self, pdf: Dict[int, List[str]]):
+    def __init__(self, pdf: Optional[Dict[int, List[str]]] = None):
+        if pdf is None:
+            return
+
         for key, val in pdf.items():
             words = []
             for v in val:
@@ -71,7 +74,6 @@ class AbstractPostingsList(ABC):
         syn_match_modifier :
         term_match_modifier :
         query :
-        postings_list :
 
         Returns an ordered list of docids and scores.
         -------
