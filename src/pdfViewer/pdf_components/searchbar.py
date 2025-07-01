@@ -2,6 +2,9 @@ import tkinter as tk
 from pathlib import Path
 from threading import Thread
 from typing import Callable, Optional
+
+import pymupdf
+from pymupdf import Document
 from ttkbootstrap import Entry, Button, Frame, LabelFrame
 
 from pdfViewer.pdf_components.results import Results
@@ -15,6 +18,7 @@ from pdfwordsearch.scan.pdf_scan import pdf_info_get
 class SearchBar(LabelFrame):
     def __init__(self, master, display_page_function: Callable[[int], None]):
         super().__init__(master, text="Searchbar")
+        self.file: Optional[Document] = None
         self.pl: Optional[AbstractPostingsList] = None
         self.display_page_function = display_page_function
 
@@ -36,29 +40,24 @@ class SearchBar(LabelFrame):
         master.bind("<Return>", lambda _ : self._perform_search())
 
     def load_pdf_file(
-        self, file_path: Optional[str] = None, file: Optional[bytes] = None
+        self, file: Document
     ):
         """
 
         Parameters
         ----------
-        file_path : path to the pdf
-        file : file as bytes
+        file : file opened in pymupdf
 
         Returns
         -------
 
         """
-        if file_path is None and file is None:
-            raise ValueError("Either file_path or file must be provided")
+        info = pdf_info_get(file=file)
 
-        if file_path is not None:
-            info = pdf_info_get(file_path)
-        else:
-            info = pdf_info_get(file, is_binary=True)
+        self.file = file
 
         self.pl = CompressedPostingsList(info)
-        self.results.update_file(info)
+        self.results.update_file(file)
 
     def _perform_search(self):
         """
@@ -79,14 +78,10 @@ if __name__ == "__main__":
     sidebar = SearchBar(root, lambda a: print(f"Go to page {a}"))
     sidebar.pack(side=tk.LEFT, expand=True, fill=tk.Y, anchor=tk.NW, padx=5, pady=5)
 
-    t1 = Thread(
-        target=sidebar.load_pdf_file(
-            str(
-                current_dir.joinpath(
+    doc = pymupdf.open(current_dir.joinpath(
                     "../../../tests/resources/List_of_chiropterans.pdf"
-                )
-            )
-        )
-    )
-    t1.start()
+                ))
+    sidebar.load_pdf_file(doc)
+
+
     root.mainloop()

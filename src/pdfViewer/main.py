@@ -43,7 +43,7 @@ class PDFViewer:
             return
 
         self.doc = pymupdf.open(file_path)
-        self.search_bar.load_pdf_file(file_path)
+        self.search_bar.load_pdf_file(self.doc)
         self.total_pages = len(self.doc)
         self.page_number = 0
         self.show_page()
