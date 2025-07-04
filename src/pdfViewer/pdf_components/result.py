@@ -13,7 +13,7 @@ class Result(Frame):
         display_page_function: Callable[[int], None] = lambda _: None,
     ):
         Frame.__init__(self, parent)
-        self.label_frame = LabelFrame(self, text=f"Page {page_number}")
+        self.label_frame = LabelFrame(self, text=f"Page {page_number + 1}")
         self.label_frame.pack(fill="x")
 
         self.summary = Label(self.label_frame, text=summary)
