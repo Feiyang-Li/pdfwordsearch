@@ -1,5 +1,3 @@
-from io import BytesIO
-
 import pytest
 
 from pdfwordsearch.data_structures.vint import VIntReader, VIntWriter

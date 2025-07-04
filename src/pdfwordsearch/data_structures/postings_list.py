@@ -1,13 +1,14 @@
-from typing import Dict, List, Tuple, Iterator
+from typing import Dict, List, Tuple, Iterator, Optional
 
 from pdfwordsearch.data_structures.abstract_postings_list import AbstractPostingsList
 
 
 class PostingsList(AbstractPostingsList):
-    def __init__(self):
+    def __init__(self, pdf: Optional[Dict[int, List[str]]] = None):
         self.postings_list: Dict[str, List[Tuple[int,int]]] = dict()
+        super().__init__(pdf)
 
-    def add_word(self, word: str, word_count: int, docid: int):
+    def _add_word(self, word: str, word_count: int, docid: int):
         if word in self.postings_list:
             self.postings_list[word].append((word_count,docid))
         else:

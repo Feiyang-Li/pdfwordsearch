@@ -4,6 +4,9 @@ import pymupdf
 import json
 import re
 
+from pymupdf import Document
+
+
 def pdf_to_dict(file_bytes: BinaryIO, ignore_page=None):
     """
     Given a pdf and convert it to a compressed posting List
@@ -29,10 +32,7 @@ def pdf_to_dict(file_bytes: BinaryIO, ignore_page=None):
 
     return store
 
-
-
-
-def pdf_info_get(file_path, ignore_page = None, encode="utf8", save = None, is_binary = False):
+def pdf_info_get(file_path = None, ignore_page = None, encode="utf8", save = None, file_stream = None, file: Document = None):
     """  
     get the information from pdf (table and image not implement yet) and 
         export as dictionary. 
@@ -46,10 +46,16 @@ def pdf_info_get(file_path, ignore_page = None, encode="utf8", save = None, is_b
     if ignore_page is None:
         ignore_page = []
 
-    if is_binary:
-        doc = pymupdf.Document(stream=file_path)
-    else:
+
+    if file_path:
         doc = pymupdf.open(file_path)
+    elif file_stream:
+        doc = pymupdf.Document(stream=file_path)
+    elif file:
+        doc = file
+    else:
+        raise ValueError("Either file_path, file_stream or file must be provided")
+
     i = 0
     for page in doc:
         if page not in ignore_page:

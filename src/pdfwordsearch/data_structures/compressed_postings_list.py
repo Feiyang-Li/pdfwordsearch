@@ -1,14 +1,14 @@
-from typing import Iterator, Dict, Tuple
+from typing import Iterator, Dict, Tuple, Optional
 
 from pdfwordsearch.data_structures.abstract_postings_list import AbstractPostingsList
 from pdfwordsearch.data_structures.vint import VIntWriter, VIntReader
 
 
 class CompressedPostingsList(AbstractPostingsList):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, info: Optional[dict] = None):
         self.postings_list: Dict[str, bytearray] = dict()
         self.docid_prev: Dict[str, int] = dict()
+        super().__init__(info)
 
     def get_words(self) -> Iterator[str]:
         """
@@ -19,7 +19,7 @@ class CompressedPostingsList(AbstractPostingsList):
         """
         return iter(self.postings_list.keys())
 
-    def add_word(self, word: str, word_count: int, docid: int):
+    def _add_word(self, word: str, word_count: int, docid: int):
         """
         Add word, word count and docid to postings list.
         Note: The word and docid should be unique. Meaning all occurences of the word should be counted before being
