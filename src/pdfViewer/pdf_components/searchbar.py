@@ -35,7 +35,7 @@ class SearchBar(LabelFrame):
         self.search_widget.pack(side=tk.TOP, anchor=tk.NW, expand=True, padx=5, pady=5, fill=tk.X)
 
         self.results = Results(self, self.display_page_function)
-        self.results.pack(side=tk.TOP, anchor=tk.SW)
+        self.results.pack(side=tk.TOP, anchor=tk.NW)
 
         master.bind("<Return>", lambda _ : self._perform_search())
 
