@@ -15,26 +15,59 @@ class PDFViewer:
         self.search_bar = SearchBar(root, self.display_page)
         self.search_bar.pack(side=tk.LEFT, fill=tk.Y, anchor=tk.NW, padx=5, pady=5)
 
-        # UI Elements
-        self.canvas = tk.Canvas(root, width=root.winfo_screenwidth(), height=root.winfo_screenheight() - 300)
-        self.canvas.pack(fill=tk.BOTH, expand=True)
+        # UI 
+        ## mainly width and height of here affect the total size
+        # Frame for canvas and scrollbars
+        canvas_frame = tk.Frame(root)
+        canvas_frame.pack(fill=tk.BOTH, expand=True)
 
+        # Vertical scrollbar
+        v_scroll = tk.Scrollbar(canvas_frame, orient=tk.VERTICAL)
+        v_scroll.pack(side=tk.RIGHT, fill=tk.Y)
+
+        # Horizontal scrollbar
+        h_scroll = tk.Scrollbar(canvas_frame, orient=tk.HORIZONTAL)
+        h_scroll.pack(side=tk.BOTTOM, fill=tk.X)
+
+        # Canvas with scroll support
+        self.canvas = tk.Canvas(canvas_frame, 
+                                width=500, 
+                                height=600,
+                                yscrollcommand=v_scroll.set,
+                                xscrollcommand=h_scroll.set)
+        self.canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+
+        v_scroll.config(command=self.canvas.yview)
+        h_scroll.config(command=self.canvas.xview)
+        ##
+
+        # mouse
+        self.canvas.bind_all("<MouseWheel>", self._on_mousewheel)      # Windows & Mac
+        self.canvas.bind_all("<Button-4>", self._on_mousewheel)        # Linux scroll up
+        self.canvas.bind_all("<Button-5>", self._on_mousewheel)        # Linux scroll down
+
+        #
         control_frame = tk.Frame(root)
-        control_frame.pack(pady=10)
+        control_frame.pack(side=tk.BOTTOM, fill=tk.X, padx=5, pady=10)
 
-        tk.Button(control_frame, text="Open PDF", command=self.open_pdf).pack(side=tk.LEFT)
-        tk.Label(control_frame, text="Search:").pack(side=tk.LEFT)
-        self.search_entry = tk.Entry(control_frame)
+        # center
+        button_container = tk.Frame(control_frame)
+        button_container.pack(side=tk.TOP, anchor=tk.CENTER)
+
+        tk.Button(button_container, text="Open PDF", command=self.open_pdf).pack(side=tk.LEFT)
+        tk.Label(button_container, text="Search:").pack(side=tk.LEFT)
+        self.search_entry = tk.Entry(button_container)
         self.search_entry.pack(side=tk.LEFT)
-        tk.Button(control_frame, text="Go", command=self.search_text).pack(side=tk.LEFT)
-        tk.Button(control_frame, text="Prev", command=self.prev_page).pack(side=tk.LEFT)
-        tk.Button(control_frame, text="Next", command=self.next_page).pack(side=tk.LEFT)
+        tk.Button(button_container, text="Go", command=self.search_text).pack(side=tk.LEFT)
+        tk.Button(button_container, text="Prev", command=self.prev_page).pack(side=tk.LEFT)
+        tk.Button(button_container, text="Next", command=self.next_page).pack(side=tk.LEFT)
 
         self.doc = None
         self.page_number = 0
         self.total_pages = 0
         self.images = []
-
+        icon = tk.PhotoImage(file="searching.png")
+        self.root.iconphoto(True, icon)
 
 
     def open_pdf(self):
@@ -59,7 +92,12 @@ class PDFViewer:
 
         self.canvas.delete("all")
         self.canvas.create_image(0, 0, anchor=tk.NW, image=self.tk_img)
+
+        # Update scroll region to fit image
+        self.canvas.config(scrollregion=(0, 0, pix.width, pix.height))
+
         self.root.title(f"PDF Viewer - Page {self.page_number+1}/{self.total_pages}")
+
 
     def next_page(self):
         if self.doc and self.page_number < self.total_pages - 1:
@@ -108,6 +146,20 @@ class PDFViewer:
         self.tk_img = ImageTk.PhotoImage(img)
         self.canvas.delete("all")
         self.canvas.create_image(0, 0, anchor=tk.NW, image=self.tk_img)
+
+    def _on_mousewheel(self, event):
+        if event.state & 0x1:  # Shift key is held down
+            # Horizontal scroll (Shift + wheel)
+            if event.num == 4 or event.delta > 0:
+                self.canvas.xview_scroll(-1, "units")  # Scroll left
+            elif event.num == 5 or event.delta < 0:
+                self.canvas.xview_scroll(1, "units")   # Scroll right
+        else:
+            # Vertical scroll (normal wheel)
+            if event.num == 4 or event.delta > 0:
+                self.canvas.yview_scroll(-1, "units")  # Scroll up
+            elif event.num == 5 or event.delta < 0:
+                self.canvas.yview_scroll(1, "units")   # Scroll down
 
 # Run
 if __name__ == "__main__":
