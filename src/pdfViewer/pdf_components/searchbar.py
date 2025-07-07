@@ -32,7 +32,7 @@ class SearchBar(LabelFrame):
             self.search_widget, text="Search", command=self._perform_search
         )
         self.search_button.pack(side=tk.LEFT, anchor=tk.NW, expand=False)
-        self.search_widget.pack(side=tk.TOP, anchor=tk.NW, expand=True, padx=5, pady=5, fill=tk.X)
+        self.search_widget.pack(side=tk.TOP, anchor=tk.NW, expand=False, padx=5, pady=5, fill=tk.X)
 
         self.results = Results(self, self.display_page_function)
         self.results.pack(side=tk.TOP, anchor=tk.NW)
@@ -79,7 +79,7 @@ if __name__ == "__main__":
     sidebar.pack(side=tk.LEFT, expand=True, fill=tk.Y, anchor=tk.NW, padx=5, pady=5)
 
     doc = pymupdf.open(current_dir.joinpath(
-                    "../../../tests/resources/List_of_chiropterans.pdf"
+                    "../../../tests/resources/hello world.pdf"
                 ))
     sidebar.load_pdf_file(doc)
 
