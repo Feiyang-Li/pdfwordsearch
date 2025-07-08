@@ -10,7 +10,13 @@ We have managed to reduce the memory usage by 44% using variable length integer 
 
 Benchmarking code can be found in [benchmarking code](tests/benchmark_tests)
 
-# Usage
+# Applications
+
+## Desktop Application
+
+### Installation
+
+### Usage
 
 ## CLI
 
@@ -26,5 +32,4 @@ Within the ``src/pdfwordsearch`` directory run the following
 python main.py [pdf file path]
 ```
 
-## [Firefox Extension](https://github.com/blacheo/pdf_search_extension_nextjs)
-An extension that uses the search engine as a backend will be available
+
