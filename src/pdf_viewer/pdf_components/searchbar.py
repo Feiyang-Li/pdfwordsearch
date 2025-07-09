@@ -7,7 +7,7 @@ import pymupdf
 from pymupdf import Document
 from ttkbootstrap import Entry, Button, Frame, LabelFrame
 
-from pdfViewer.pdf_components.results import Results
+from pdf_viewer.pdf_components.results import Results
 from pdfwordsearch.data_structures.abstract_postings_list import AbstractPostingsList
 from pdfwordsearch.data_structures.compressed_postings_list import (
     CompressedPostingsList,
@@ -35,7 +35,7 @@ class SearchBar(LabelFrame):
         self.search_widget.pack(side=tk.TOP, anchor=tk.NW, expand=False, padx=5, pady=5, fill=tk.X)
 
         self.results = Results(self, self.display_page_function)
-        self.results.pack(side=tk.TOP, anchor=tk.NW)
+        self.results.pack(side=tk.TOP, anchor=tk.NW, expand=True)
 
         master.bind("<Return>", lambda _ : self._perform_search())
 

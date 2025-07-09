@@ -4,3 +4,4 @@ process/
 **/__pycache__/
 src/backend/uploaded_files/
 /tests/benchmark_tests/*.png
+**/build/
