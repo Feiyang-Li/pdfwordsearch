@@ -23,26 +23,7 @@ A postings list data structure is created by the application to quickly perform 
 
 Benchmarking code can be found in [benchmarking code](tests/benchmark_tests)
 
-# Applications
+# Desktop Application
 
-## Desktop Application
-
-### Installation
-
-### Usage
-
-## CLI
-
-### Requirements
-- Poetry
-
-#### Installation
-Use ``poetry install`` to install all the packages required by pdfwordsearch
-
-### Usage
-Within the ``src/pdfwordsearch`` directory run the following
-```
-python main.py [pdf file path]
-```
-
+A Windows executable can be found [here](https://drive.google.com/file/d/1xATFucXB8-Kin1iGnrnCvNjnCp01Qd0H/view?usp=sharing)
 
