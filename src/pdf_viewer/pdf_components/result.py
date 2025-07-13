@@ -14,7 +14,7 @@ class Result(Frame):
     ):
         Frame.__init__(self, parent)
         self.label_frame = LabelFrame(self, text=f"Page {page_number + 1}")
-        self.label_frame.pack(fill="x")
+        self.label_frame.pack(fill="x", expand=True)
 
         self.summary = Label(self.label_frame, text=summary)
         self.summary.pack(fill="x")

@@ -7,9 +7,9 @@ class VerticalScrollableFrame(Frame):
 
         # Create a canvas object and a vertical scrollbar for scrolling it.
         vscrollbar = ttk.Scrollbar(self, orient=VERTICAL)
-        vscrollbar.pack(fill=Y, side=RIGHT, expand=FALSE, anchor=NE)
+        vscrollbar.pack(fill=Y, side=RIGHT, expand=TRUE, anchor=NE)
         self.canvas = Canvas(self, bd=0, highlightthickness=0,
-                                width=200, height=300,
+                                width=200,
                                 yscrollcommand=vscrollbar.set)
         self.canvas.pack(side=LEFT, fill=BOTH, expand=TRUE)
         vscrollbar.config(command=self.canvas.yview)
@@ -37,7 +37,7 @@ class VerticalScrollableFrame(Frame):
 class Window:
     def __init__(self, master, *args, **kwargs):
         self.frame = VerticalScrollableFrame(master)
-        self.frame.pack(expand=True, fill=BOTH)
+        self.frame.pack(expand=TRUE, fill=BOTH)
         self.label = ttk.Label(master, text="Shrink the window to activate the scrollbar.")
         self.label.pack()
 
