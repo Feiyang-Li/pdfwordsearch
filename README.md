@@ -1,12 +1,15 @@
 ## 📚 Smart PDF Search
 
-Smart PDF Search is a Python tool that enables intelligent search within PDF documents. Unlike traditional Ctrl+F, which only matches exact text, this tool ranks pages based on the appearance of keywords. It also leverages NLP techniques to find synonyms.
+Smart PDF Search is a Python tool that enables intelligent search within PDF documents. 
+
+### Painpoint our Project Solves
+Unlike traditional Ctrl+F, which only matches exact text, this tool ranks pages based on the appearance of keywords. It also leverages NLP techniques to find synonyms.
 
 ## Features
 
 ### Smart Search Bar
 
-Use the smart search bar to query a pdf by keywords. The most relevant pages will be listed here.
+Use the smart search bar to query a pdf by keywords. The most relevant pages will be listed here. 
 
 ![image](https://github.com/user-attachments/assets/56954926-bd96-4e59-8842-6ba5568af863)
 
@@ -27,3 +30,8 @@ Benchmarking code can be found in [benchmarking code](tests/benchmark_tests)
 
 A Windows executable can be found [here](https://drive.google.com/file/d/1xATFucXB8-Kin1iGnrnCvNjnCp01Qd0H/view?usp=sharing)
 
+# Technologies used in the Project
+- pymupdf
+- pytest
+- tkinter for UI
+- fastapi
