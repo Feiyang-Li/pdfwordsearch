@@ -69,6 +69,12 @@ class SearchBar(LabelFrame):
         if self.pl is None:
             return
         results = self.pl.execute_query(self.entry.get())
+        # ## Test
+        # with open("tuples.txt", "w", encoding="utf-8") as f:
+        #     for item in results:
+        #         f.write(f"{item}\n")
+
+        # ##
         self.results.update_results(results)
 
 
