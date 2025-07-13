@@ -87,7 +87,8 @@ if __name__ == "__main__":
     root = tk.Tk()
     current_dir = Path(__file__).parent
     sidebar = SearchBar(root, lambda a: print(f"Go to page {a}"))
-    sidebar.pack(side=tk.LEFT, expand=True, fill=tk.Y, anchor=tk.NW, padx=5, pady=5)
+    sidebar.pack(side=tk.LEFT, expand=True, fill=tk.BOTH, anchor=tk.NW, padx=5)
+
 
     doc = pymupdf.open(current_dir.joinpath(
                     "../../../tests/resources/hello world.pdf"
