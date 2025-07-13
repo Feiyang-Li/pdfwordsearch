@@ -3,8 +3,7 @@ from tkinter import filedialog, messagebox
 from PIL import Image, ImageTk
 import pymupdf
 
-from pdfViewer.pdf_components.searchbar import SearchBar
-from pdfwordsearch.scan.pdf_scan import pdf_info_get
+from pdf_components.searchbar import SearchBar
 
 
 class PDFViewer:

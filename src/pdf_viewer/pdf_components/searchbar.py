@@ -52,11 +52,16 @@ class SearchBar(LabelFrame):
         -------
 
         """
-        info = pdf_info_get(file=file)
+        # info = pdf_info_get(file=file)
 
         self.file = file
 
-        self.pl = CompressedPostingsList(info)
+        # self.pl = CompressedPostingsList(info)
+        self.pl = CompressedPostingsList.pdf_convert_to_abl(file_position=file)
+
+
+
+
         self.results.update_file(file)
 
     def _perform_search(self):
