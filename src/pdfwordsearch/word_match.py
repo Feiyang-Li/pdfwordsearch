@@ -1,11 +1,12 @@
+from typing import List
+
 from nltk.corpus import wordnet as wn
 import nltk
 import difflib
 
-def wordSynonyms(word: str = "default", CI = 0.3):
+def get_synonyms(word: str = "default", CI = 0.3) -> List[str]:
     """ 
-    wordSynonyms convert the word into list of words that is the 
-    synonyms of the word and also additional chance of that word is added
+    for a word, get its synonyms
     Input:
     word: str  
     CI: float => cutoff interval for similarity
@@ -13,7 +14,7 @@ def wordSynonyms(word: str = "default", CI = 0.3):
     list(...(word : str, clossness: int) ... )
     """
     base_synset = wn.synsets(word)[0]  # Choose the primary sense (adjust as needed)
-    similar_words = []
+    synonyms = []
 
     for synset in wn.synsets(word):
         for lemma in synset.lemmas():
@@ -25,12 +26,12 @@ def wordSynonyms(word: str = "default", CI = 0.3):
             sim = base_synset.wup_similarity(other_synsets[0])
             if sim is not None and lemma.name() != word:
                 if sim > CI:
-                    similar_words.append((lemma.name()))
+                    synonyms.append((lemma.name()))
 
-    return similar_words
+    return synonyms
 
     
-def simMatch(wordMatch, wordOrig, CI = 0.5, test=False):
+def sim_match(word_match, word_orig, CI = 0.5, test=False):
     """ 
     determine if wordMatch is similar as wordOrig
     Input:
@@ -41,14 +42,14 @@ def simMatch(wordMatch, wordOrig, CI = 0.5, test=False):
     true/false
     """
     if test:
-        print(difflib.SequenceMatcher(None, wordMatch, wordOrig).ratio())
-    return difflib.SequenceMatcher(None, wordMatch, wordOrig).ratio() > CI
+        print(difflib.SequenceMatcher(None, word_match, word_orig).ratio())
+    return difflib.SequenceMatcher(None, word_match, word_orig).ratio() > CI
 
-def match(wordMatch, wordOrig, CI_syn, CI_sim):
+def match(word_match, word_orig, CI_syn, CI_sim):
     # wordMatch: word we want to check if it is valid
     # wordOrig: the word we have on our hand. 
-    wordSyn = wordSynonyms(wordOrig, CI_syn)
-    return (wordMatch in wordSyn) or (simMatch(wordMatch, wordOrig, CI_sim)) or wordMatch == wordOrig
+    wordSyn = get_synonyms(word_orig, CI_syn)
+    return (word_match in wordSyn) or (sim_match(word_match, word_orig, CI_sim)) or word_match == word_orig
 
 
 ## match would obtain some level of change
