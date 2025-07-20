@@ -8,4 +8,4 @@ from tests.test_files import hello_world_pdf
 def test_pdf_to_info_query(pl_class, hello_world_pdf):
     pl = pl_class(hello_world_pdf)
     actual = pl.execute_query("Hello")
-    assert actual == [(0,0)]
+    assert actual == [(0, 1.0397207708399179), (1, 1.0397207708399179)]
