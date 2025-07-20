@@ -1,4 +1,5 @@
 import tkinter as tk
+from pathlib import Path
 from tkinter import filedialog, messagebox
 
 import nltk
@@ -14,7 +15,7 @@ def resource_path(relative_path):
     try:
         base_path = sys._MEIPASS  # PyInstaller temp folder
     except AttributeError:
-        base_path = os.path.abspath(".")  # Dev mode
+        base_path = Path(__file__).parent # dev mode
 
     return os.path.join(base_path, relative_path)
 
@@ -89,7 +90,7 @@ class PDFViewer:
         self.page_number = 0
         self.total_pages = 0
         self.images = []
-        icon_path = resource_path("assets/searching.png")
+        icon_path = resource_path("../../assets/searching.png")
         icon = tk.PhotoImage(file=icon_path)
         self.root.iconphoto(True, icon)
 
