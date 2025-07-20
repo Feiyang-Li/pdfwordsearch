@@ -6,3 +6,7 @@ src/backend/uploaded_files/
 /tests/benchmark_tests/*.png
 **/build/
 .vscode/
+/.vscode/
+/.idea
+main.spec
+*.exe
