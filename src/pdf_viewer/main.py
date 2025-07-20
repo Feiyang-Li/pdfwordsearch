@@ -2,23 +2,46 @@ import tkinter as tk
 from tkinter import filedialog, messagebox
 from PIL import Image, ImageTk
 import pymupdf
+import os
+import sys
 
-from pdf_components.searchbar import SearchBar
+from src.pdf_viewer.pdf_components.searchbar import SearchBar
 
+def resource_path(relative_path):
+    """Get absolute path to resource (works for dev and PyInstaller)"""
+    try:
+        base_path = sys._MEIPASS  # PyInstaller temp folder
+    except AttributeError:
+        base_path = os.path.abspath(".")  # Dev mode
+
+    return os.path.join(base_path, relative_path)
+
+# root
+# ├── main_frame (fill=BOTH)
+# │   ├── left_frame (side=LEFT, fill=Y)
+# │   │   └── search_bar (fill=BOTH, expand=True)
+# │   └── canvas_frame (fill=BOTH, expand=True)
+# └── control_frame (side=BOTTOM, fill=X)
 
 class PDFViewer:
     def __init__(self, root):
         self.root = root
         self.root.title("PDF Viewer with Search")
 
-        self.search_bar = SearchBar(root, self.display_page)
-        self.search_bar.pack(side=tk.LEFT, fill=tk.Y, anchor=tk.NW, padx=5, pady=5)
+        main_frame = tk.Frame(root)
+        main_frame.pack(fill=tk.BOTH, expand=True)
+
+        # sidebar left:
+        left_frame = tk.Frame(main_frame)
+        left_frame.pack(side=tk.LEFT, fill=tk.Y)
+        self.search_bar = SearchBar(left_frame, self.display_page)
+        self.search_bar.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
 
         # UI 
         ## mainly width and height of here affect the total size
         # Frame for canvas and scrollbars
-        canvas_frame = tk.Frame(root)
-        canvas_frame.pack(fill=tk.BOTH, expand=True)
+        canvas_frame = tk.Frame(main_frame)
+        canvas_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
         # Vertical scrollbar
         v_scroll = tk.Scrollbar(canvas_frame, orient=tk.VERTICAL)
@@ -48,7 +71,6 @@ class PDFViewer:
         #
         control_frame = tk.Frame(root)
         control_frame.pack(side=tk.BOTTOM, fill=tk.X, padx=5, pady=10)
-
         # center
         button_container = tk.Frame(control_frame)
         button_container.pack(side=tk.TOP, anchor=tk.CENTER)
@@ -65,7 +87,8 @@ class PDFViewer:
         self.page_number = 0
         self.total_pages = 0
         self.images = []
-        icon = tk.PhotoImage(file="searching.png")
+        icon_path = resource_path("assets/searching.png")
+        icon = tk.PhotoImage(file=icon_path)
         self.root.iconphoto(True, icon)
 
 
@@ -111,7 +134,7 @@ class PDFViewer:
     def display_page(self, page_number):
         if self.doc is None:
             return
-        if not 0 < page_number < self.total_pages:
+        if not 0 <= page_number < self.total_pages:
             raise ValueError("Page number out of range")
 
         self.page_number = page_number

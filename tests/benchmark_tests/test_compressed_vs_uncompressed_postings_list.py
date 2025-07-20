@@ -3,21 +3,17 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import time
 from pympler import asizeof
-
 from pdfwordsearch.data_structures.compressed_postings_list import (
     CompressedPostingsList,
 )
 from pdfwordsearch.data_structures.postings_list import PostingsList
-from pdfwordsearch.scan.pdf_scan import pdf_info_get
+from tests.test_files import chiropterans_pdf
 
 current_dir = Path(__file__).parent
-path = current_dir.joinpath("../resources/List_of_chiropterans.pdf")
 
-
-def test_memory_usage():
-    doc_info = pdf_info_get(path)
-    cpl = CompressedPostingsList(doc_info)
-    upl = PostingsList(doc_info)
+def test_memory_usage(chiropterans_pdf):
+    cpl = CompressedPostingsList(chiropterans_pdf)
+    upl = PostingsList(chiropterans_pdf)
 
     cpl_size = asizeof.asizeof(cpl) / 1000
     upl_size = asizeof.asizeof(upl) / 1000
@@ -33,7 +29,7 @@ def test_memory_usage():
 
 
 # Create graphs comparing compressed vs uncompressed postings list performance
-def test_c_vs_u_large():
+def test_c_vs_u_large(chiropterans_pdf):
     queries = [
         "bat",
         "the bat has large wings",
@@ -46,10 +42,8 @@ def test_c_vs_u_large():
         "The suborders are further subdivided into clades and families, with Yangochiroptera containing fourteen families grouped into three superfamilies",
     ]
 
-    doc_info = pdf_info_get(path)
-
-    cpl = CompressedPostingsList(doc_info)
-    upl = PostingsList(doc_info)
+    cpl = CompressedPostingsList(chiropterans_pdf)
+    upl = PostingsList(chiropterans_pdf)
 
     cpl_times = []
     upl_times = []

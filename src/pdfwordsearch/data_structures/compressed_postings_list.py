@@ -1,18 +1,16 @@
-from typing import Iterator, Dict, Tuple, Optional
+from typing import Iterator, Dict, Optional
 
-from pdfwordsearch.data_structures.abstract_postings_list import AbstractPostingsList
-from pdfwordsearch.data_structures.vint import VIntWriter, VIntReader
-import pymupdf
-import json
-import re
-import string
 from pymupdf import Document
 
+from pdfwordsearch.data_structures.abstract_postings_list import AbstractPostingsList, QueryResult
+from pdfwordsearch.data_structures.vint import VIntWriter, VIntReader
+
+
 class CompressedPostingsList(AbstractPostingsList):
-    def __init__(self, info: Optional[dict] = None):
+    def __init__(self, document: Optional[Document] = None):
         self.postings_list: Dict[str, bytearray] = dict()
         self.docid_prev: Dict[str, int] = dict()
-        super().__init__(info)
+        super().__init__(document)
 
     def get_words(self) -> Iterator[str]:
         """
@@ -43,11 +41,18 @@ class CompressedPostingsList(AbstractPostingsList):
             self.postings_list[word] = bytearray()
             self.docid_prev[word] = 0
 
+        if word_count < 0:
+            raise ValueError("word_count must be positive")
+
         VIntWriter.write(self.postings_list[word], word_count)
+
+        if docid < self.docid_prev[word]:
+            raise ValueError(f"docid should be greater than the previous one. docid value: {docid}, previous value: {self.docid_prev[word]}")
+
         VIntWriter.write(self.postings_list[word], docid - self.docid_prev[word])
         self.docid_prev[word] = docid
 
-    def get_locations(self, word: str) -> Iterator[Tuple[int, int]]:
+    def get_locations(self, word: str) -> Iterator[QueryResult]:
         """
 
         Parameters
@@ -69,100 +74,5 @@ class CompressedPostingsList(AbstractPostingsList):
 
             docid = delta_docid + docid_prev
             docid_prev = docid
-            yield word_count, docid
+            yield QueryResult(word_count=word_count, doc_id=docid)
 
-    @classmethod
-    def pdf_convert_to_abl(cls, file_position: str, encode: str = "utf8", save: Optional[str] = None, scan_param: Dict = {}):
-            """
-            Convert a pdf file to an AbstractPostingsList
-            Parameters
-            ----------
-            file_position : str
-                Location of the pdf file
-            encode : str
-                Encoding method of the pdf
-            save : Optional[str]
-                Save to the given location, not save if pass in as None
-            scan_param : Dict
-                Parameter options for the pdfInfo Get.
-
-            Returns
-            -------
-            An instance of AbstractPostingsList containing the words and their counts.
-            """
-            instance = cls()
-
-            def pdf_info_get(file_path = None, ignore_page = None, encode="utf8", save = None, file_stream = None, file: Document = None):
-                """  
-                get the information from pdf (table and image not implement yet) and 
-                    export as dictionary. 
-                filePath: string => readFile from this location
-                ignore: list(...int...) => page to ignore
-                encode: str => page encoding method 
-                save: str | None => save read into json. 
-                """
-                store = {}
-
-                if ignore_page is None:
-                    ignore_page = []
-
-
-                if file_path:
-                    doc = pymupdf.open(file_path)
-                elif file_stream:
-                    doc = pymupdf.Document(stream=file_path)
-                elif file:
-                    doc = file
-                else:
-                    raise ValueError("Either file_path, file_stream or file must be provided")
-
-                i = 0
-                for page in doc:
-                    if page not in ignore_page:
-                        txt = page.get_text("dict")
-                        lst = []
-                        for block in txt["blocks"]:
-                            if "lines" in block:
-                                for line in block["lines"]:
-                                    aStr = " ".join([span["text"] for span in line["spans"]])
-                                    nStr = re.sub(r"[^\w\s]", " ", aStr) # no weird stuff
-                                    lst.append(nStr)
-                    store[i] = lst
-                    i = i + 1
-                if save:
-                    with open(save, "w", encoding=encode) as f:
-                        json.dump(store, f, indent=4)
-                return store
-
-            def createPostingListFrompdf(filePosition: str, encode : str = "utf8" , save : str | None = None, scanParam = {}):
-                """ 
-                CreatePostingListFromPdf: creating a posting list from the pdf
-                filePostion: str => location of the file
-                encoode: str => encoding method of the pdf
-                save: str | None => save to the given location, not save if pass in as None
-                scanParam: dic => parameter option for the pdfInfo Get. 
-                
-                """
-                df = pdf_info_get(filePosition, **scanParam)
-                store = {}
-                for key, val in df.items():
-                    word_count = {}
-                    for sentence in val:
-                        translator = str.maketrans('', '', string.punctuation)
-                        words = sentence.translate(translator).split()
-                        for word in words:
-                            w = word.lower() 
-                            word_count[w] = word_count.get(w, 0) + 1
-                    store[key] = word_count
-
-                for key, val in store.items():
-                    docid = key
-                    secVal = val
-                    for word, count in secVal.items():
-                        instance._add_word(word, count, docid)
-
-                if save:
-                    with open(save, "w", encoding=encode) as f:
-                        json.dump(instance.postings_list, f, indent=4)
-            createPostingListFrompdf(file_position, encode, save, scan_param)
-            return instance

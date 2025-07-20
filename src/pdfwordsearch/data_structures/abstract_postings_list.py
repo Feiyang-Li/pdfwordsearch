@@ -1,3 +1,4 @@
+import dataclasses
 from abc import ABC, abstractmethod
 from collections import defaultdict
 from typing import Iterator, Tuple, List, Dict, Optional
@@ -6,20 +7,28 @@ from pdfwordsearch.match_score_rank.word_match import word_synonyms
 from pdfwordsearch.query.term import tokens_to_terms, Term, NegativeTerm
 from pdfwordsearch.query.tokenizer import tokenize
 import math
-from collections import Counter
+from pymupdf import Document
 
+from pdfwordsearch.scan.pdf_scan import pdf_to_words
+
+@dataclasses.dataclass
+class QueryResult:
+    word_count: int
+    doc_id: int
+
+    def __iter__(self):
+        return iter(dataclasses.astuple(self))
 
 class AbstractPostingsList(ABC):
-    def __init__(self, pdf: Optional[Dict[int, List[str]]] = None):
+    def __init__(self, pdf: Optional[Document] = None):
         if pdf is None:
             return
-        for key, val in pdf.items():
-            words = []
-            for v in val:
-                words.extend(wd.lower().strip() for wd in v.split())
-            word_count = Counter(words)
-            for w, count in word_count.items():
-                self._add_word(w, count, key)
+
+        pages = pdf_to_words(pdf)
+
+        for i, page in enumerate(pages):
+            for word, count in page.items():
+                self._add_word(word, count, i)
 
 
     @abstractmethod
@@ -39,7 +48,7 @@ class AbstractPostingsList(ABC):
         raise NotImplementedError()
 
     @abstractmethod
-    def get_locations(self, word: str) -> Iterator[Tuple[int, int]]:
+    def get_locations(self, word: str) -> Iterator[QueryResult]:
         """
 
         Parameters
@@ -88,20 +97,21 @@ class AbstractPostingsList(ABC):
         for term in terms:
             match term:
                 case Term(value=value):
-                    for docid, word_count in self.get_locations(value):
+                    value = value.lower()
+                    for word_count, docid in self.get_locations(value):
                         result[docid] += math.log(word_count + 1) * term_match_modifier
 
                     try:
                         syns = word_synonyms(value)
 
                         for syn in syns:
-                            for docid, word_count in self.get_locations(syn):
+                            for word_count, docid in self.get_locations(syn):
                                 result[docid] += math.log(word_count + 1) * syn_match_modifier
                     except LookupError:
                         print("nltk package not installed. Ignoring synonyms")
 
                 case NegativeTerm(value=value):
-                    for docid, word_count in self.get_locations(value):
+                    for word_count, docid in self.get_locations(value):
                         result[docid] -= math.log(word_count + 1) * term_match_modifier
                 case _:
                     raise RuntimeError(f"Unknown term type {type(term)} with value {term}")

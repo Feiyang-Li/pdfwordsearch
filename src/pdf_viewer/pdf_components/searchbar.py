@@ -1,6 +1,5 @@
 import tkinter as tk
 from pathlib import Path
-from threading import Thread
 from typing import Callable, Optional
 
 import pymupdf
@@ -12,7 +11,7 @@ from pdfwordsearch.data_structures.abstract_postings_list import AbstractPosting
 from pdfwordsearch.data_structures.compressed_postings_list import (
     CompressedPostingsList,
 )
-from pdfwordsearch.scan.pdf_scan import pdf_info_get
+from pdfwordsearch.scan.pdf_scan import any_to_pdf
 
 
 class SearchBar(LabelFrame):
@@ -32,10 +31,10 @@ class SearchBar(LabelFrame):
             self.search_widget, text="Search", command=self._perform_search
         )
         self.search_button.pack(side=tk.LEFT, anchor=tk.NW, expand=False)
-        self.search_widget.pack(side=tk.TOP, anchor=tk.NW, expand=False, padx=5, pady=5, fill=tk.X)
+        self.search_widget.pack(side=tk.TOP, anchor=tk.NW, fill=tk.X, padx=5, pady=5)
 
         self.results = Results(self, self.display_page_function)
-        self.results.pack(side=tk.TOP, anchor=tk.NW, expand=True)
+        self.results.pack(side=tk.TOP, anchor=tk.NW, fill=tk.BOTH, expand=True)
 
         master.bind("<Return>", lambda _ : self._perform_search())
 
@@ -57,7 +56,8 @@ class SearchBar(LabelFrame):
         self.file = file
 
         # self.pl = CompressedPostingsList(info)
-        self.pl = CompressedPostingsList.pdf_convert_to_abl(file_position=file)
+        pdf  = any_to_pdf(self.file)
+        self.pl = CompressedPostingsList(pdf)
 
 
 
