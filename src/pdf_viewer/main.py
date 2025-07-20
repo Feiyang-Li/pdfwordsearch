@@ -1,5 +1,7 @@
 import tkinter as tk
 from tkinter import filedialog, messagebox
+
+import nltk
 from PIL import Image, ImageTk
 import pymupdf
 import os
@@ -185,6 +187,7 @@ class PDFViewer:
 
 # Run
 if __name__ == "__main__":
+    nltk.download('wordnet')
     root = tk.Tk()
     app = PDFViewer(root)
     root.mainloop()
