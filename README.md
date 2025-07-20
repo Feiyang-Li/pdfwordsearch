@@ -7,16 +7,19 @@ Unlike traditional Ctrl+F, which only matches exact text, this tool ranks pages 
 
 ## Features
 
+### PDF Viewer
+A pdf viewer is included in the project.
+![image](https://github.com/user-attachments/assets/95d624d1-f6f8-4994-8cc0-b0156560dc8a)
+
 ### Smart Search Bar
 
 Use the smart search bar to query a pdf by keywords. The most relevant pages will be listed here. 
 
 ![image](https://github.com/user-attachments/assets/56954926-bd96-4e59-8842-6ba5568af863)
 
-### PDF Viewer
-A pdf viewer is included in the project.
-![image](https://github.com/user-attachments/assets/95d624d1-f6f8-4994-8cc0-b0156560dc8a)
 
+### Synonyms
+The tool can also search for synonyms, making it easier to find what you're looking for.
 
 
 
