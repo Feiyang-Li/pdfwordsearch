@@ -1,6 +1,5 @@
 import tkinter as tk
 from pathlib import Path
-from threading import Thread
 from typing import Callable, Optional
 
 import pymupdf
@@ -12,7 +11,7 @@ from pdfwordsearch.data_structures.abstract_postings_list import AbstractPosting
 from pdfwordsearch.data_structures.compressed_postings_list import (
     CompressedPostingsList,
 )
-from pdfwordsearch.scan.pdf_scan import pdf_info_get
+from pdfwordsearch.scan.pdf_scan import any_to_pdf
 
 
 class SearchBar(LabelFrame):
@@ -57,7 +56,8 @@ class SearchBar(LabelFrame):
         self.file = file
 
         # self.pl = CompressedPostingsList(info)
-        self.pl = CompressedPostingsList.pdf_convert_to_abl(file_position=file)
+        pdf  = any_to_pdf(self.file)
+        self.pl = CompressedPostingsList(pdf)
 
 
 

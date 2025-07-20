@@ -1,12 +1,12 @@
 import uuid
 
+import pymupdf
 from fastapi import FastAPI, File, UploadFile, Form, Cookie, HTTPException
 from fastapi.responses import JSONResponse
 import os
 
 from pdfwordsearch.data_structures.compressed_postings_list import CompressedPostingsList
 from typing import List, Optional, Annotated, Dict, cast
-from pdfwordsearch.scan.pdf_scan import pdf_info_get
 from pydantic import BaseModel
 
 app = FastAPI()
@@ -53,10 +53,7 @@ async def pdfToApl(file: UploadFile = File(...), page_ignore: Optional[List[int]
         return JSONResponse(status_code=400, content={"error": "Only PDF files are allowed."})
 
     file_bytes = await file.read()
-    ## process 1: obtaining the abstract table:
-    fl = pdf_info_get(file_bytes, ignore_page=page_ignore, encode=encode, save=save, is_binary=True)
-    ## process 2: convert to compressed posting list
-    cpl = CompressedPostingsList(fl)
+    cpl = CompressedPostingsList(pymupdf.Document(stream=file_bytes))
 
     # Associate APL with cookie
     unique_key = str(uuid.uuid4())

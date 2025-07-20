@@ -4,7 +4,8 @@ from typing import List, Tuple
 
 from pdfwordsearch.data_structures.compressed_postings_list import CompressedPostingsList
 from pdfwordsearch.data_structures.postings_list import PostingsList
-from pdfwordsearch.scan.pdf_scan import pdf_info_get
+from pdfwordsearch.scan.pdf_scan import any_to_pdf
+
 
 class IOCoordinator:
     @staticmethod
@@ -44,9 +45,9 @@ class IOCoordinator:
         args = parser.parse_args()
 
         start = time.time()
-        pdf_info = pdf_info_get(args.pdf)
+        pdf = any_to_pdf(args.pdf)
 
-        postings_list = PostingsList(pdf_info) if args.unoptimized else CompressedPostingsList(pdf_info)
+        postings_list = PostingsList(pdf) if args.unoptimized else CompressedPostingsList(pdf)
         end = time.time()
         print(f"Loaded file in {end - start} seconds")
 
@@ -70,7 +71,3 @@ class IOCoordinator:
                 end = time.time()
 
                 IOCoordinator._print_results(scores, args.count, end - start)
-
-
-
-

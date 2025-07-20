@@ -3,7 +3,7 @@ from pathlib import Path
 import pytest
 from pymupdf import pymupdf
 
-from pdfViewer.utilities.summary import summary
+from pdf_viewer.utilities.summary import summary
 
 @pytest.fixture
 def current_dir():

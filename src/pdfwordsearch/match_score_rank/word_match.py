@@ -1,6 +1,10 @@
+import os
+
 from nltk.corpus import wordnet as wn
-import nltk
 import difflib
+
+basepath = os.path.dirname(__file__)
+corpus_root = os.path.abspath(os.path.join(basepath, "../"))
 
 def word_synonyms(word: str = "default", CI = 0.3):
     """ 

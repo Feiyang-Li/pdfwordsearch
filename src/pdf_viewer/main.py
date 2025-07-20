@@ -111,7 +111,7 @@ class PDFViewer:
     def display_page(self, page_number):
         if self.doc is None:
             return
-        if not 0 < page_number < self.total_pages:
+        if not 0 <= page_number < self.total_pages:
             raise ValueError("Page number out of range")
 
         self.page_number = page_number

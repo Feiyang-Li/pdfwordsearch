@@ -1,14 +1,16 @@
-from typing import Iterator, Dict, Tuple, Optional
+from typing import Iterator, Dict, Optional
 
-from pdfwordsearch.data_structures.abstract_postings_list import AbstractPostingsList
+from pymupdf import Document
+
+from pdfwordsearch.data_structures.abstract_postings_list import AbstractPostingsList, QueryResult
 from pdfwordsearch.data_structures.vint import VIntWriter, VIntReader
 
 
 class CompressedPostingsList(AbstractPostingsList):
-    def __init__(self, info: Optional[dict] = None):
+    def __init__(self, document: Optional[Document] = None):
         self.postings_list: Dict[str, bytearray] = dict()
         self.docid_prev: Dict[str, int] = dict()
-        super().__init__(info)
+        super().__init__(document)
 
     def get_words(self) -> Iterator[str]:
         """
@@ -39,11 +41,18 @@ class CompressedPostingsList(AbstractPostingsList):
             self.postings_list[word] = bytearray()
             self.docid_prev[word] = 0
 
+        if word_count < 0:
+            raise ValueError("word_count must be positive")
+
         VIntWriter.write(self.postings_list[word], word_count)
+
+        if docid < self.docid_prev[word]:
+            raise ValueError(f"docid should be greater than the previous one. docid value: {docid}, previous value: {self.docid_prev[word]}")
+
         VIntWriter.write(self.postings_list[word], docid - self.docid_prev[word])
         self.docid_prev[word] = docid
 
-    def get_locations(self, word: str) -> Iterator[Tuple[int, int]]:
+    def get_locations(self, word: str) -> Iterator[QueryResult]:
         """
 
         Parameters
@@ -65,5 +74,5 @@ class CompressedPostingsList(AbstractPostingsList):
 
             docid = delta_docid + docid_prev
             docid_prev = docid
-            yield word_count, docid
+            yield QueryResult(word_count=word_count, doc_id=docid)
 
