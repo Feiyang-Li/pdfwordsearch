@@ -31,7 +31,7 @@ Benchmarking code can be found in [benchmarking code](tests/benchmark_tests)
 
 # Desktop Application
 
-A Windows executable can be found [here](https://drive.google.com/file/d/1xATFucXB8-Kin1iGnrnCvNjnCp01Qd0H/view?usp=sharing)
+A Windows executable can be found [here](https://drive.google.com/file/d/1msy_X3nF4SLOphjC8MIzXmEWVKXUCMPn/view?usp=sharing)
 
 # Technologies used in the Project
 - pymupdf
