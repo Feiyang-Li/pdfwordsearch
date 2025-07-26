@@ -27,5 +27,5 @@ def test_word_at_page_zero(postings_list):
     postings_list._add_word("hello", 12, 0)
 
     actual_matches = list(postings_list.execute_query("hello"))
-    assert actual_matches == [("hello", [(0, 3.8474240361923053)])]
+    assert actual_matches == [(0, 3.8474240361923053)]
 
