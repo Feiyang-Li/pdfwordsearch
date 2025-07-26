@@ -33,7 +33,7 @@ async def process_html(payload: HtmlPayload):
 
 
 @app.post("/pdf_to_apl/")
-async def pdfToApl(file: UploadFile = File(...), page_ignore: Optional[List[int]] = Form(None), encode: str = "utf8", save: str = None):
+async def pdf_to_apl(file: UploadFile = File(...), page_ignore: Optional[List[int]] = Form(None), encode: str = "utf8", save: str = None):
     """
     Converts the file to an APL and returns a cookie
     Parameters
@@ -70,6 +70,7 @@ async def query_apl(query: str, session_id: Annotated[str | None, Cookie()] = No
     Execute a query on the APL. Uses cookies to differentiate between users
     Parameters
     ----------
+    session_id :
     query :
     CI_syn :
     CI_sim :
