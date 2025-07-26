@@ -16,7 +16,7 @@ def summary(pdf: Document, page_num: int, max_length: int = 50) -> str:
 
     """
     if page_num < 0 or page_num >= len(pdf):
-        raise ValueError(f"Invalid page number {page_num}. PDF has {len(pdf)} pages.")
+        raise IndexError(f"Invalid page number {page_num}. PDF has {len(pdf)} pages.")
     text: str = pdf[page_num].get_text()
     text = text.strip()
     length_ellipse = len(ELLIPSIS)
