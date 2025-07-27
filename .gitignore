@@ -11,3 +11,4 @@ src/backend/uploaded_files/
 main.spec
 *.exe
 dist/
+*.msi
