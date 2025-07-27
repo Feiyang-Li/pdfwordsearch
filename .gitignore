@@ -10,3 +10,4 @@ src/backend/uploaded_files/
 /.idea
 main.spec
 *.exe
+dist/
